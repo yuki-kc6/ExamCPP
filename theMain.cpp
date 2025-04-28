@@ -1,12 +1,18 @@
 #include "DxLib.h"
+#include "Player.h"
+#include "global.h"
+#include "Input.h"
+#include "Enemy01.h"
 
 namespace
 {
-	//XGA SIZE
-	const int WIN_WIDTH = 1280;
-	const int WIN_HEIGHT = 720;
+	const int BGCOL[3] = { 0,0,0};
+	int crrTime;
+	int prevTime;
+
 }
 
+float gDeltaTime = 0.0f;//フレーム間の時間差
 
 void DxInit()
 {
@@ -15,7 +21,7 @@ void DxInit()
 	SetMainWindowText("TITLE");
 	SetGraphMode(WIN_WIDTH, WIN_HEIGHT, 32);
 	SetWindowSizeExtendRate(1.0);
-	SetBackgroundColor(255, 250, 205);
+	SetBackgroundColor(BGCOL[0],BGCOL[1],BGCOL[2]);
 
 	// ＤＸライブラリ初期化処理
 	if (DxLib_Init() == -1)
@@ -40,16 +46,36 @@ void MyGame()
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow)
 {
 	DxInit();
+	crrTime = GetNowCount();
+	prevTime = GetNowCount();
 
+
+	Player* player = new Player();
+	Enemy01* enemy01 = new Enemy01();
 	while (true)
 	{
 		ClearDrawScreen();
+		Input::KeyStateUpdate();
+
+		crrTime = GetNowCount();//現在の時間を取得
+		//前回の時間との差分を計算
+		float deltaTime = (crrTime - prevTime) / 1000.0f;//秒単位に変換
+		gDeltaTime = deltaTime;//グローバル変数に変換
+
 
 		//ここにやりたい処理を書く
+		player->Update();
+		player->Draw();
+
+		enemy01->Update();
+		enemy01->Draw();
+
 
 
 		ScreenFlip();
 		WaitTimer(16);
+		prevTime = crrTime;
+
 		if (ProcessMessage() == -1)
 			break;
 		if (CheckHitKey(KEY_INPUT_ESCAPE) == 1)
