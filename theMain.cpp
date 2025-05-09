@@ -51,7 +51,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 
 	Player* player = new Player();
-	Enemy01* enemy01 = new Enemy01();
+	Enemy01* enemy01 = new Enemy01[10];
+	for (int i = 0; i < 10; i++) {
+		enemy01[i].SetPos(100 + i * 50, 100);
+	}
+
 	while (true)
 	{
 		ClearDrawScreen();
@@ -67,9 +71,13 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		player->Update();
 		player->Draw();
 
-		enemy01->Update();
-		enemy01->Draw();
+		for (int i = 0; i < 10; i++)
+		{
+			(enemy01 + i)->Update();//enemy[i].UpdateÇ∆àÍèè
+			(enemy01 + i)->Draw();//enemy[i].DrawÇ∆àÍèè
+		}
 
+		//Ç±Ç±Ç‹Ç≈
 
 
 		ScreenFlip();
