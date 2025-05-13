@@ -1,9 +1,8 @@
 #include "DxLib.h"
-#include "Player.h"
 #include "global.h"
 #include "Input.h"
-#include "Enemy01.h"
-
+#include <vector>
+#include "Stage.h"
 namespace
 {
 	const int BGCOL[3] = { 0,0,0};
@@ -49,12 +48,22 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	crrTime = GetNowCount();
 	prevTime = GetNowCount();
 
+	Stage* stage=new Stage;
 
-	Player* player = new Player();
-	Enemy01* enemy01 = new Enemy01[10];
-	for (int i = 0; i < 10; i++) {
+
+	//const int ENEMY_NUM = 10;//“G‚Ì”
+
+	//Player* player = new Player();
+	//Enemy01* enemy01 = new Enemy01[ENEMY_NUM];
+	/*for (int i = 0; i < ENEMY_NUM; i++)
+		{
+			enemy01[i].SetPos(100 + i * 50, 100);
+		}*/
+
+	
+	/*for (int i = 0; i < 10; i++) {
 		enemy01[i].SetPos(100 + i * 50, 100);
-	}
+	}*/
 
 	while (true)
 	{
@@ -66,16 +75,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		float deltaTime = (crrTime - prevTime) / 1000.0f;//•b’PˆÊ‚É•ÏŠ·
 		gDeltaTime = deltaTime;//ƒOƒ[ƒoƒ‹•Ï”‚É•ÏŠ·
 
-
+		
 		//‚±‚±‚É‚â‚è‚½‚¢ˆ—‚ð‘‚­
-		player->Update();
-		player->Draw();
-
-		for (int i = 0; i < 10; i++)
-		{
-			(enemy01 + i)->Update();//enemy[i].Update‚Æˆê
-			(enemy01 + i)->Draw();//enemy[i].Draw‚Æˆê
-		}
+		stage->Update();
+		stage->Draw();
 
 		//‚±‚±‚Ü‚Å
 
