@@ -12,13 +12,14 @@ namespace
 Stage::Stage()
 	:GameObject(), player_(nullptr)
 {
+	AddGameObject(this);//ステージオブジェクトをゲームオブジェクト
 	player_ = new Player();
 	enemy01_ = std::vector<Enemy01*>(ENEMY_NUM);
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
 		int col = i % ENEMY_COL_SIZE;
 		int row = i / ENEMY_COL_SIZE;
-		ETYPE enemyType[ENEMY_ROW_SIZE] = {BOSS,KNIGHT.ZAKO,ZAKO,ZAKO };
+		ETYPE enemyType[ENEMY_ROW_SIZE] = {BOSS,KNIGHT,ZAKO,ZAKO,ZAKO };
 		
 		enemy01_[i] = new Enemy01(i, enemyType[row]);
 

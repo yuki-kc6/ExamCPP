@@ -4,7 +4,7 @@
 
 enum ETYPE
 {
-    ZAKO, MID, KNGIHT, BOSS,MAX_ETYPE
+    ZAKO, MID, KNIGHT, BOSS,MAX_ETYPE
 };
 
 class Enemy01 :

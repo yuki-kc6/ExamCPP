@@ -57,6 +57,7 @@ Enemy01::Enemy01(int id,ETYPE type)
 	x_ = ENEMY_INIT_X;
 	y_ = ENEMY_INIT_Y;
 	speed_ = ENEMY_INIT_SPEED;
+	AddGameObject(this);//敵オブジェクトをゲームオブジェクトに追加
 }
 
 

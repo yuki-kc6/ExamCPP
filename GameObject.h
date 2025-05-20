@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+
 class GameObject
 {
 public:
@@ -6,5 +8,13 @@ public:
 	virtual	~GameObject();
 	virtual void Update() = 0;//=0で必ず継承しないと使えない。設計思想。
 	virtual void Draw() = 0;
+
 };
 
+extern std::vector<GameObject*> gameObjects;//ゲームオブジェクトのベクター
+extern std::vector<GameObject*> newObjects;//ゲームオブジェクトのベクター
+
+inline void AddGameObject(GameObject* obj)
+{
+	newObjects.push_back(obj);//ゲームオブジェクトをベクターに追加
+}
