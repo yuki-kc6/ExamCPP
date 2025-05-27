@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "Bullet.h"
 
+
 namespace
 {
 	
@@ -16,8 +17,11 @@ namespace
 	const float PLAYER_INIT_Y = WIN_HEIGHT - PLAYER_IMAGE_HEIGHT-PLAYER_BASE_MARGIN;//ﾌﾟﾚｲﾔｰの初期Y座標
 	const int BULLET_IMAGE_MARGIN = 17; //弾の真ん中が6.5。プレイヤーの真ん中と合わせる。プレイヤーの横幅/2-弾の幅/2
 	const float BULLET_INTERVAL = 0.5f;//弾の発射間隔
+	const int PLAYER_BULLET_NUM = 5;//ﾌﾟﾚｲﾔｰが同時に発射できる弾の数
 
 }
+
+
 
 
 
@@ -33,6 +37,11 @@ Player::Player()
 	x_ = PLAYER_INIT_X;//初期速度
 	y_ = PLAYER_INIT_Y;//初期速度
 	speed_ = PLAYER_INIT_SPEED;//初期速度
+	for (int i = 0; i < PLAYER_BULLET_NUM; i++)
+	{
+		bullets_.push_back(new Bullet()); //弾のベクターを初期化
+	}
+
 	AddGameObject(this);//ﾌﾟﾚｲﾔｰオブジェクトをゲームオブジェクトに追加
 }
 
@@ -59,7 +68,8 @@ void Player::Update()
 
 	if (Input::IsKeyDown(KEY_INPUT_SPACE)) {
 		if (bulletTimer <=0.0f) {
-			new Bullet(x_ + BULLET_IMAGE_MARGIN, y_);//弾の発射
+			Shoot();
+			//new Bullet(x_ + BULLET_IMAGE_MARGIN, y_);//弾の発射
 			//プレイヤーの右上から真ん中になる横幅を足す
 			bulletTimer = BULLET_INTERVAL;//弾の発射間隔をリセット
 		}
@@ -70,6 +80,39 @@ void Player::Update()
 void Player::Draw()
 {
 	//プレイヤーの画像を描画（画像の原点は左上）
-	DrawExtendGraph(x_, y_, x_ + PLAYER_IMAGE_WIDTH, y_ + PLAYER_IMAGE_HEIGHT, 
+	DrawExtendGraphF(x_, y_, x_ + PLAYER_IMAGE_WIDTH, y_ + PLAYER_IMAGE_HEIGHT, 
 		hImage_, TRUE);
+}
+
+//弾を撃つ関数
+void Player::Shoot()
+{
+	//for (auto& itr : bullets_)
+	//{
+	//	if (itr->IsFired() == false)
+	//	{
+	//		itr->SetPos(x_ + BULLET_IMAGE_MARGIN, y_);//弾の位置
+	//		itr->SetFired(true);//発射状態にする
+	//		break;//一つ発射したらループを抜ける
+	//	}
+	//}
+
+	Bullet* bit = GetActiveBullet();
+	if (bit != nullptr)
+	{
+		bit->SetPos(x_ + BULLET_IMAGE_MARGIN, y_);//弾の位置を設定
+		bit->SetFired(true);//発射状態にする
+	}
+}
+
+Bullet* Player::GetActiveBullet()
+{
+	for (auto& itr : bullets_)
+	{
+		if (!itr->IsFired())
+		{
+			return itr;//発射されていない弾を返す
+		}
+	}
+	return nullptr;
 }

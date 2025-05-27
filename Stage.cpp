@@ -34,20 +34,9 @@ Stage::~Stage()
 
 void Stage::Update()
 {
-	player_->Update();//ÌßÚ²Ô°‚ÌXV
-	for (auto& elm : enemy01_)
-	{
-		elm->Update();//“G‚ÌXV
-	}
 }
 
 void Stage::Draw()
 {
-	player_->Draw();//ÌßÚ²Ô°‚Ì•`‰æ
-	for (auto& elm : enemy01_)
-	{
-		elm->Draw();//“G‚Ì•`‰æ
-	}
-
-
+	
 }

@@ -11,6 +11,7 @@ public:
 	virtual void Update() = 0;//=0で必ず継承しないと使えない。設計思想。
 	virtual void Draw() = 0;
 	bool IsAlive() { return isAlive_; }//ゲームオブジェクトが生きているか
+	void SetAlive(bool alive) { isAlive_ = alive; }//ゲームオブジェクトの生存
 };
 
 extern std::vector<GameObject*> gameObjects;//ゲームオブジェクトのベクター

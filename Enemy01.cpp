@@ -11,15 +11,14 @@ namespace
 	
 	const int ENEMY_INIT_X = 100;//“G‚Ì‰ŠúX
 	const int ENEMY_INIT_Y = 100;//“G‚Ì‰ŠúY
-	const int ENEMY_INIT_SPEED = 100.0f;
+	const float ENEMY_INIT_SPEED = 100.0f;
 }
 
 Enemy01::Enemy01()
 	:GameObject(),
 	hImage_(-1),
 	x_(0), y_(0),
-	speed_(0),
-	isAlive(true)
+	speed_(0)
 {
 	hImage_ = LoadGraph("Assets\\tiny_ship10.png");
 	if (hImage_ == -1) {
@@ -36,7 +35,6 @@ Enemy01::Enemy01(int id,ETYPE type)
 	hImage_(-1),
 	x_(0), y_(0),
 	speed_(0),
-	isAlive(true),
 	ID_(id),type_(type)
 {
 	//ETYPE::ZAKO=>"Assets\\tiny_ship10.png"
@@ -76,6 +74,6 @@ void Enemy01::Update()
 
 void Enemy01::Draw()
 {
-	DrawExtendGraph(x_, y_, x_+ENEMY_IMAGE_WIDTH,y_+ENEMY_IMAGE_HEIGHT, hImage_, TRUE);
+	DrawExtendGraphF(x_,y_, x_+ENEMY_IMAGE_WIDTH,y_+ENEMY_IMAGE_HEIGHT, hImage_, TRUE);
 
 }
