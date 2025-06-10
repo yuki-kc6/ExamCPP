@@ -1,8 +1,9 @@
+#include <DxLib.h>
 #include "Stage.h"
 #include "Player.h"
 #include "Enemy01.h"
 #include "Bullet.h"
-#include "DxLib.h"
+
 namespace
 {
 	const int ENEMY_NUM = 10*7;//“G‚Ì”
@@ -54,7 +55,7 @@ Stage::Stage()
 
 		enemy01_[i]->SetMaxMoveX(ENEMY_LEFT_MARGIN);
 		
-		enemy01_[i]->SetPos(col * ENEMY_ALIGN_X,row * ENEMY_ALIGN_Y+ENEMY_TOP_MARGIN);
+		enemy01_[i]->SetPos(col * ENEMY_ALIGN_X+ENEMY_LEFT_MARGIN,row * ENEMY_ALIGN_Y+ENEMY_TOP_MARGIN);
 
 		enemy01_[i]->SetXorigin(col * ENEMY_ALIGN_X + ENEMY_LEFT_MARGIN);
 	}

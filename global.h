@@ -1,4 +1,5 @@
 #pragma once
+
 const int WIN_WIDTH = 1024;
 const int WIN_HEIGHT = 768;
 

@@ -17,8 +17,8 @@ EnemyBeam::EnemyBeam()
 	AddGameObject(this);
 }
 
-EnemyBeam::EnemyBeam(float x,float y)
-	:GameObject(), hImage_(-1), pos_({ -10,-10 }),
+EnemyBeam::EnemyBeam(float x, float y)
+	:GameObject(), hImage_(-1), pos_({ x,y }), 
 	speed_(ENEMY_BEAM_INIT_SPEED),isFired_(true), 
 	imageSize_({ ENEMY_BEAM_IMAGE_WIDTH,ENEMY_BEAM_IMAGE_HEIGHT })
 {
@@ -27,9 +27,9 @@ EnemyBeam::EnemyBeam(float x,float y)
 	AddGameObject(this);
 }
 
-EnemyBeam::EnemyBeam(const Point& pos)
-	:GameObject(), hImage_(-1), pos_({ -10,-10 }), 
-	speed_(ENEMY_BEAM_INIT_SPEED),isFired_(true), 
+EnemyBeam::EnemyBeam(Point pos_)
+	:GameObject(), hImage_(-1), pos_({ pos_.x,pos_.y }),
+	speed_(ENEMY_BEAM_INIT_SPEED), isFired_(true),
 	imageSize_({ ENEMY_BEAM_IMAGE_WIDTH,ENEMY_BEAM_IMAGE_HEIGHT })
 {
 	hImage_ = LoadGraph("Assets\\beams1.png");
@@ -49,7 +49,7 @@ void EnemyBeam::Update()
 {
 	float dt = GetDeltaTime();
 	pos_.y = pos_.y + speed_ * dt;
-	if (pos_.y < WIN_HEIGHT)
+	if (pos_.y > WIN_HEIGHT)
 	{
 		isFired_ = false;//âÊñ äOÇ…èoÇΩÇÁèÄîıèÛë‘
 		SetAlive(false);

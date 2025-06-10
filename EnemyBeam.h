@@ -8,7 +8,7 @@ class EnemyBeam :
 public:
     EnemyBeam();
     EnemyBeam(float x, float y);
-    EnemyBeam(const Point& pos);
+    EnemyBeam(Point pos_);
     ~EnemyBeam();
     void Update() override;
     void Draw() override;

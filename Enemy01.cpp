@@ -68,6 +68,7 @@ Enemy01::Enemy01(int id,ETYPE type)
 Enemy01::~Enemy01()
 {
 	new Effect({ x_, y_ });
+
 	if (hImage_ != -1)
 	{
 		DeleteGraph(hImage_);//‰æ‘œ‚Ìƒnƒ“ƒhƒ‹‚ð‰ð•ú
@@ -96,5 +97,6 @@ void Enemy01::Update()
 
 void Enemy01::Draw()
 {
-	DrawExtendGraphF(x_, y_, x_ + ENEMY_IMAGE_WIDTH, y_ + ENEMY_IMAGE_HEIGHT, hImage_, TRUE);
+	DrawExtendGraphF(x_, y_, x_ + ENEMY_IMAGE_WIDTH,
+		y_ + ENEMY_IMAGE_HEIGHT, hImage_, TRUE);
 }
