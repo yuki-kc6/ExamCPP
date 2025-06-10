@@ -13,6 +13,7 @@ class Stage :
 private:
     Player* player_;//ﾌﾟﾚｲﾔｰオブジェクト
     std::vector<Enemy01 *> enemy01_;//敵オブジェクト
+    int hBackGround;
 public:
     Stage();
     ~Stage();

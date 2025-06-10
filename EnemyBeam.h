@@ -1,30 +1,31 @@
 #pragma once
 #include "GameObject.h"
 #include "global.h"
-class Bullet :
+
+class EnemyBeam :
     public GameObject
 {
-    //13.0f33.0f
 public:
-    Bullet();
-    Bullet(float x, float y);
-    ~Bullet();
+    EnemyBeam();
+    EnemyBeam(float x, float y);
+    EnemyBeam(const Point& pos);
+    ~EnemyBeam();
     void Update() override;
     void Draw() override;
 
-    void SetPos(float x, float y);
+    void SetPos(float x, float y) { pos_.x = x; pos_.y = y; }
+    void SetPos(const Point& pos) { pos_ = pos; }
     void SetFired(bool fired) { isFired_ = fired; }//発射状態を設定
     bool IsFired() const { return isFired_; }//発射状態を取得
-    Rect GetRect()const { return { x_,y_,imageSize_.x,imageSize_.y}; }//プレイヤーの矩形を取得
+    Rect GetRect()const { return {pos_.x,pos_.y,imageSize_.x,imageSize_.y }; }//プレイヤーの矩形を取得
 protected:
 private:
     int hImage_;//球の画像ハンドル
-    float x_, y_;//座標
+    Point pos_;//弾の座標
     float speed_;//移動速度
     Point imageSize_;
     //int isize_x, isize_y;//弾の表示サイズ
     bool isFired_;//発射されているかどうか true:発射された false 発射されていない
-
 
 };
 

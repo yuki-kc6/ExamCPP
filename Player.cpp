@@ -21,15 +21,10 @@ namespace
 
 }
 
-
-
-
-
-
 Player::Player()
-	:GameObject(),hImage_(-1),x_(0),y_(0),speed_(0)
+	:GameObject(),hImage_(-1),x_(0),y_(0),speed_(0),imageSize_({PLAYER_IMAGE_WIDTH,PLAYER_IMAGE_HEIGHT})
 {
-	hImage_ = LoadGraph("Assets\\tiny_ship5.png");//ﾌﾟﾚｲﾔｰの画像
+	hImage_ = LoadGraph("Assets\\tiny_ship5.png");//ﾌﾟﾚｲﾔｰの画像  
 	if (hImage_ == -1) {
 		//画像の読み込みに失敗した場合のエラーハンドリング
 		//エラーを返してゲーム終了
@@ -39,7 +34,7 @@ Player::Player()
 	speed_ = PLAYER_INIT_SPEED;//初期速度
 	for (int i = 0; i < PLAYER_BULLET_NUM; i++)
 	{
-		bullets_.push_back(new Bullet()); //弾のベクターを初期化
+		bullets_.push_back(new Bullet(-10,-10)); //弾のベクターを初期化
 	}
 
 	AddGameObject(this);//ﾌﾟﾚｲﾔｰオブジェクトをゲームオブジェクトに追加
@@ -52,15 +47,24 @@ Player::~Player()
 
 void Player::Update()
 {
+	Point nextP = {x_,y_};
 	float dt = GetDeltaTime();
 	if (Input::IsKeepKeyDown(KEY_INPUT_LEFT)) {
-		x_ -= speed_  *dt;//左に移動
+		nextP.x =x_- speed_  *dt;//左に移動
 	}
 	if (Input::IsKeepKeyDown(KEY_INPUT_RIGHT)) {
-		x_ += speed_ * dt;//左に移動
+		nextP.x =x_+ speed_ * dt;//左に移動
 	}
+
+	if (nextP.x >= 0 && (nextP.x+PLAYER_IMAGE_WIDTH) <= WIN_WIDTH)
+	{
+		x_ = nextP.x;
+		y_ = nextP.y;
+	}
+
+
+
 	static float bulletTimer = 0.0f;
-	
 	if (bulletTimer > 0.0f)
 	{
 		bulletTimer -= dt;//タイマーを減少

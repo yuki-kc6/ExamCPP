@@ -12,8 +12,9 @@ namespace
 }
 
 Bullet::Bullet()
-	:GameObject(),hImage_(-1),x_(-1),y_(-1),speed_(0),isFired_(false),
-	isize_x(BULLET_IMAGE_WIDTH),isize_y(BULLET_IMAGE_HEIGHT)
+	:GameObject(),hImage_(-1),
+	x_(-1),y_(-1),speed_(0),isFired_(false),
+	imageSize_({ BULLET_IMAGE_WIDTH,BULLET_IMAGE_HEIGHT })
 {
 	hImage_ = LoadGraph(BULLET_IMAGE_PATH.c_str());//ì«Ç›çûÇ›
 	speed_ = BULLET_INIT_SPEED;//à⁄ìÆë¨ìx
@@ -21,8 +22,9 @@ Bullet::Bullet()
 }
 
 Bullet::Bullet(float x, float y)
-	:GameObject(), hImage_(-1), x_(x), y_(y), speed_(0), isFired_(false),
-	isize_x(BULLET_IMAGE_WIDTH), isize_y(BULLET_IMAGE_HEIGHT)
+	:GameObject(), hImage_(-1),
+	x_(x), y_(y), speed_(0), isFired_(false),
+	imageSize_({BULLET_IMAGE_WIDTH,BULLET_IMAGE_HEIGHT})
 {
 	hImage_ = LoadGraph(BULLET_IMAGE_PATH.c_str());//ì«Ç›çûÇ›
 	speed_ = BULLET_INIT_SPEED;//à⁄ìÆë¨ìx
@@ -51,7 +53,7 @@ void Bullet::Draw()
 	//î≠éÀÇ≥ÇÍÇƒÇ¢ÇΩÇÁï`âÊ
 	if (isFired_)
 	{
-		DrawExtendGraphF(x_, y_, x_ + isize_x, y_ + isize_y, hImage_,true);//íeÇÃï`âÊ
+		DrawExtendGraphF(x_, y_, x_ + imageSize_.x, y_ + imageSize_.y, hImage_,true);//íeÇÃï`âÊ
 	}
 }
 
