@@ -16,7 +16,7 @@ private:
     Point pos_;
     float animTimer_;
     int frame_;
-    int frameTimer_;
+    float frameTimer_;
 };
 
 

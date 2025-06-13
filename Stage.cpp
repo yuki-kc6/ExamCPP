@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Enemy01.h"
 #include "Bullet.h"
+#include "Input.h"
 
 namespace
 {
@@ -13,7 +14,6 @@ namespace
 	const float ENEMY_ALIGN_Y = 50.0f;//敵を並べる高さ
 	const int ENEMY_LEFT_MARGIN =(WIN_WIDTH-(ENEMY_ALIGN_X*ENEMY_COL_SIZE))/2;
 	const int ENEMY_TOP_MARGIN =75;
-	
 
 	bool IntersectRect(const Rect &a ,const Rect &b) 
 	{
@@ -41,25 +41,12 @@ namespace
 }
 
 Stage::Stage()
-	:GameObject(), player_(nullptr),hBackGround(-1)
+	:GameObject(), player_(nullptr),hBackGround(-1),eCount(0)
 {
 	AddGameObject(this);//ステージオブジェクトをゲームオブジェクト
-	player_ = new Player();
-	enemy01_ = std::vector<Enemy01*>(ENEMY_NUM);
-	for (int i = 0; i < ENEMY_NUM; i++)
-	{
-		int col = i % ENEMY_COL_SIZE;
-		int row = i / ENEMY_COL_SIZE;
-		ETYPE enemyType[ENEMY_ROW_SIZE] = {BOSS,KNIGHT,ZAKO,ZAKO,ZAKO };
-		enemy01_[i] = new Enemy01(i, enemyType[row]);
-
-		enemy01_[i]->SetMaxMoveX(ENEMY_LEFT_MARGIN);
-		
-		enemy01_[i]->SetPos(col * ENEMY_ALIGN_X+ENEMY_LEFT_MARGIN,row * ENEMY_ALIGN_Y+ENEMY_TOP_MARGIN);
-
-		enemy01_[i]->SetXorigin(col * ENEMY_ALIGN_X + ENEMY_LEFT_MARGIN);
-	}
+	
 	hBackGround = LoadGraph("Assets\\bg.png");
+	state = TITLE;
 }
 
 Stage::~Stage()
@@ -68,22 +55,83 @@ Stage::~Stage()
 
 void Stage::Update()
 {
+	switch (state)
+	{
+	case TITLE:
+		Stage::UpdateTitle();
+		break;
+	case PLAY:
+		Stage::UpdatePlay();
+		break;
+	case GAMEOVER:
+		Stage::UpdateGameover();
+		break;
+	case CLEAR:
+		Stage::UpdateClear();
+		break;
+	}
+}
+
+void Stage::UpdateTitle()
+{
+	DrawBox(0, 0, 100, 100, GetColor(255, 255, 255), false);
+	if (Input::IsKeepKeyDown(KEY_INPUT_SPACE))
+	{
+		player_ = new Player();
+		state = PLAY;
+		enemy01_ = std::vector<Enemy01*>(ENEMY_NUM);
+		for (int i = 0; i < ENEMY_NUM; i++)
+		{
+			int col = i % ENEMY_COL_SIZE;
+			int row = i / ENEMY_COL_SIZE;
+			ETYPE enemyType[ENEMY_ROW_SIZE] = { BOSS,KNIGHT,ZAKO,ZAKO,ZAKO };
+			enemy01_[i] = new Enemy01(i, enemyType[row]);
+
+			enemy01_[i]->SetMaxMoveX(ENEMY_LEFT_MARGIN);
+
+			enemy01_[i]->SetPos(col * ENEMY_ALIGN_X + ENEMY_LEFT_MARGIN, row * ENEMY_ALIGN_Y + ENEMY_TOP_MARGIN);
+
+			enemy01_[i]->SetXorigin(col * ENEMY_ALIGN_X + ENEMY_LEFT_MARGIN);
+		}
+	}
+}
+
+void Stage::UpdatePlay()
+{
 	std::vector<Bullet*>bullets = player_->GetAllBullets();
 	for (auto& e : enemy01_)
 	{
 		for (auto& b : bullets)
 		{
-			if (b->IsFired()&&e->IsAlive()) {
+			if (b->IsFired() && e->IsAlive()) {
 				if (IntersectRect(e->GetRect(), b->GetRect()))
 				{
 					if (b->IsFired())
 						b->SetFired(false);
-					if (e->IsAlive())
+					if (e->IsAlive()) {
 						e->SetAlive(false);
+						eCount++;
+					}
+
 				}
 			}
 		}
 	}
+
+	if (enemy01_.empty())
+	{
+		state = CLEAR;
+	}
+}
+
+void Stage::UpdateGameover()
+{
+
+}
+
+void Stage::UpdateClear()
+{
+	DrawBox(0, 0, 100, 100, GetColor(255, 255, 255), false);
 }
 
 void Stage::Draw()

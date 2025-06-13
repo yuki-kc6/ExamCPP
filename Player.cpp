@@ -4,10 +4,8 @@
 #include "Input.h"
 #include "Bullet.h"
 
-
 namespace
-{
-	
+{	
 	const float PLAYER_INIT_SPEED = 200.0f;//ﾌﾟﾚｲﾔｰの初期速度
 	const int PLAYER_IMAGE_WIDTH = 48;//ﾌﾟﾚｲﾔｰの画像の幅
 	const int PLAYER_IMAGE_HEIGHT = 48;//ﾌﾟﾚｲﾔｰの画像の高さ
@@ -18,7 +16,6 @@ namespace
 	const int BULLET_IMAGE_MARGIN = 17; //弾の真ん中が6.5。プレイヤーの真ん中と合わせる。プレイヤーの横幅/2-弾の幅/2
 	const float BULLET_INTERVAL = 0.5f;//弾の発射間隔
 	const int PLAYER_BULLET_NUM = 5;//ﾌﾟﾚｲﾔｰが同時に発射できる弾の数
-
 }
 
 Player::Player()
