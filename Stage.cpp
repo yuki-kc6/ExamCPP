@@ -3,11 +3,12 @@
 #include "Player.h"
 #include "Enemy01.h"
 #include "Bullet.h"
+#include "EnemyBeam.h"
 #include "Input.h"
 
 namespace
 {
-	const int ENEMY_NUM = 10*7;//“G‚Ì”
+	const int ENEMY_NUM = 3;//10*7;//“G‚Ì”
 	const int ENEMY_COL_SIZE = 10;//“G‚Ì—ñ”
 	const int ENEMY_ROW_SIZE =7;//“G‚Ìs”
 	const float ENEMY_ALIGN_X = 55.0f;//“G‚ð•À‚×‚é•
@@ -98,9 +99,40 @@ void Stage::UpdateTitle()
 
 void Stage::UpdatePlay()
 {
+	
+	PlayerVSEnemyBullet();
+	
+	if (!player_->IsAlive())
+	{
+		enemy01_.clear();
+		state = GAMEOVER;
+		
+	}
+	if (eCount >= ENEMY_NUM)
+	{
+		state = CLEAR;
+	}
+}
+
+void Stage::UpdateGameover()
+{
+	DrawBox(0, 0, 100, 100, GetColor(255, 255, 255), false);
+}
+
+void Stage::UpdateClear()
+{
+	DrawBox(0, 0, 100, 100, GetColor(255, 255, 255), false);
+}
+
+void Stage::PlayerVSEnemyBullet()
+{
+
+	
+
 	std::vector<Bullet*>bullets = player_->GetAllBullets();
 	for (auto& e : enemy01_)
 	{
+		std::vector<EnemyBeam*>beam = e->GetAllBeam();
 		for (auto& b : bullets)
 		{
 			if (b->IsFired() && e->IsAlive()) {
@@ -115,23 +147,51 @@ void Stage::UpdatePlay()
 
 				}
 			}
+
+		}
+		for (auto& eb : beam)
+		{
+			if (eb->IsFired() && player_->IsAlive())
+			{
+				if (IntersectRect(eb->GetRect(), player_->GetRect()))
+				{
+					if (eb->IsFired())
+						eb->SetFired(false);
+					if (player_->IsAlive()) {
+						player_->SetAlive(false);
+					}
+
+				}
+			}
+			for (auto& pb : bullets)
+			{
+				if (eb->IsFired() && pb->IsAlive())
+				{
+					if (IntersectRect(eb->GetRect(), pb->GetRect()))
+					{
+						if (pb->IsAlive()) {
+							pb->SetFired(false);
+							pb->SetAlive(false);
+						}
+
+						if (eb->IsAlive())
+						{
+							eb->SetFired(false);
+							eb->SetAlive(false);
+						}
+
+
+					}
+				}
+			}
+
 		}
 	}
 
-	if (enemy01_.empty())
-	{
-		state = CLEAR;
-	}
-}
 
-void Stage::UpdateGameover()
-{
 
-}
 
-void Stage::UpdateClear()
-{
-	DrawBox(0, 0, 100, 100, GetColor(255, 255, 255), false);
+	
 }
 
 void Stage::Draw()

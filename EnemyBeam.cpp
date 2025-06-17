@@ -9,7 +9,7 @@ namespace
 
 EnemyBeam::EnemyBeam()
 	:GameObject(),hImage_(-1),pos_({-10,-10}),
-	speed_(ENEMY_BEAM_INIT_SPEED),isFired_(true),
+	speed_(ENEMY_BEAM_INIT_SPEED),isFired_(false),
 	imageSize_({ENEMY_BEAM_IMAGE_WIDTH,ENEMY_BEAM_IMAGE_HEIGHT})
 {
 	hImage_ = LoadGraph("Assets\\beams1.png");
@@ -19,7 +19,7 @@ EnemyBeam::EnemyBeam()
 
 EnemyBeam::EnemyBeam(float x, float y)
 	:GameObject(), hImage_(-1), pos_({ x,y }), 
-	speed_(ENEMY_BEAM_INIT_SPEED),isFired_(true), 
+	speed_(ENEMY_BEAM_INIT_SPEED),isFired_(false), 
 	imageSize_({ ENEMY_BEAM_IMAGE_WIDTH,ENEMY_BEAM_IMAGE_HEIGHT })
 {
 	hImage_ = LoadGraph("Assets\\beams1.png");
@@ -29,7 +29,7 @@ EnemyBeam::EnemyBeam(float x, float y)
 
 EnemyBeam::EnemyBeam(Point pos_)
 	:GameObject(), hImage_(-1), pos_({ pos_.x,pos_.y }),
-	speed_(ENEMY_BEAM_INIT_SPEED), isFired_(true),
+	speed_(ENEMY_BEAM_INIT_SPEED), isFired_(false),
 	imageSize_({ ENEMY_BEAM_IMAGE_WIDTH,ENEMY_BEAM_IMAGE_HEIGHT })
 {
 	hImage_ = LoadGraph("Assets\\beams1.png");

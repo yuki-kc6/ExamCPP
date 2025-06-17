@@ -14,6 +14,8 @@ namespace
 	const int ENEMY_INIT_X = 100;//敵の初期X
 	const int ENEMY_INIT_Y = 100;//敵の初期Y
 	const float ENEMY_INIT_SPEED = 100.0f;
+	const int ENEMY_BEAM_NUM = 2;//敵一体が発射できる弾の数
+	const float BEAM_INTERVAL = 1.0f;//弾の発射間隔
 }
 
 Enemy01::Enemy01()
@@ -30,6 +32,10 @@ Enemy01::Enemy01()
 	x_ = ENEMY_INIT_X;
 	y_ = ENEMY_INIT_Y;
 	speed_ = ENEMY_INIT_SPEED;
+	for (int i = 0; i < ENEMY_BEAM_NUM; i++)
+	{
+		beam_.push_back(new EnemyBeam(-100, -100));
+	}
 	//idとtypeを指定されなかった時の処理
 }
 
@@ -61,6 +67,11 @@ Enemy01::Enemy01(int id,ETYPE type)
 	x_ = ENEMY_INIT_X;
 	y_ = ENEMY_INIT_Y;
 	speed_ = ENEMY_INIT_SPEED;
+	for (int i = 0; i < ENEMY_BEAM_NUM; i++)
+	{
+		beam_.push_back(new EnemyBeam(-100, -100));
+	}
+
 	AddGameObject(this);//敵オブジェクトをゲームオブジェクトに追加
 }
 
@@ -78,7 +89,6 @@ Enemy01::~Enemy01()
 
 void Enemy01::Update()
 {
-	static float beamTimer = 3.0f;
 
 	float period = 10.0f;//1往復にかける時間（秒）
 	float omega = 2.0f * 3.14159265f / period;//角速度 ω=2π/T
@@ -86,9 +96,11 @@ void Enemy01::Update()
 	x_ = xorigin_ + xMoveMax_ / 2.0 * sinf(omega * moveTime_);
 	y_ = y_;
 
+	static float beamTimer = 3.0f;
+
 	if (beamTimer < 0)
 	{
-		new EnemyBeam(x_ + ENEMY_IMAGE_WIDTH / 2, y_ + ENEMY_IMAGE_HEIGHT);
+		Shoot();
 		beamTimer = 3.0f;
 	}
 	beamTimer -= GetDeltaTime();
@@ -99,4 +111,27 @@ void Enemy01::Draw()
 {
 	DrawExtendGraphF(x_, y_, x_ + ENEMY_IMAGE_WIDTH,
 		y_ + ENEMY_IMAGE_HEIGHT, hImage_, TRUE);
+}
+
+void Enemy01::Shoot()
+{
+	EnemyBeam* bit = GetActiveBeam();
+	if (bit != nullptr)
+	{
+		bit->SetPos(x_ + ENEMY_IMAGE_WIDTH / 2, y_ + ENEMY_IMAGE_HEIGHT);
+		bit->SetFired(true);
+	}
+}
+
+EnemyBeam* Enemy01::GetActiveBeam()
+{
+	for (auto& itr : beam_)
+	{
+		if (!itr->IsFired())
+		{
+			return itr;
+		}
+	}
+
+	return nullptr;
 }

@@ -30,6 +30,6 @@ private:
     void UpdatePlay();
     void UpdateGameover();
     void UpdateClear();
-    
+    void PlayerVSEnemyBullet();
 };
 

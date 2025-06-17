@@ -7,6 +7,9 @@ enum ETYPE
     ZAKO, MID, KNIGHT, BOSS,MAX_ETYPE
 };
 
+
+class EnemyBeam;
+
 class Enemy01 :
     public GameObject
 {
@@ -16,11 +19,13 @@ public:
     ~Enemy01();
     void Update()override;
     void Draw()override;
+    void Shoot();
     void SetPos(float x, float y) { x_ = x; y_ = y; }//敵の座標を設定
     Rect GetRect()const { return { x_,y_,imageSize_.x,imageSize_.y }; }//プレイヤーの矩形を取得
     //void SetID(int id) { ID_ = id; }//敵のIDを設定
     void SetMaxMoveX(float xmax) { xMoveMax_ = xmax; }
     void SetXorigin(float x) { xorigin_ = x; }
+    std::vector<EnemyBeam*>GetAllBeam()const { return beam_; }//全ての玉を取得
 protected:
 
 private:
@@ -30,7 +35,10 @@ private:
     Point imageSize_;
     int ID_;//敵のID
     ETYPE type_;//敵の種類
+    std::vector<EnemyBeam*>beam_;
     float xMoveMax_;
     float xorigin_;
     float moveTime_;
+    EnemyBeam* GetActiveBeam();
+
 };
