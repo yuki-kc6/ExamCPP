@@ -13,6 +13,7 @@ public:
     void Update() override;
     void Draw() override;
 
+    void SetTarget(const Point& pos);
     void SetPos(float x, float y) { pos_.x = x; pos_.y = y; }
     void SetPos(const Point& pos) { pos_ = pos; }
     void SetFired(bool fired) { isFired_ = fired; }//発射状態を設定
@@ -22,6 +23,7 @@ protected:
 private:
     int hImage_;//球の画像ハンドル
     Point pos_;//弾の座標
+    Point tpos_;//ターゲットの座標
     float speed_;//移動速度
     Point imageSize_;
     //int isize_x, isize_y;//弾の表示サイズ

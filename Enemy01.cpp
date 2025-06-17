@@ -14,7 +14,7 @@ namespace
 	const int ENEMY_INIT_X = 100;//“G‚Ì‰ŠúX
 	const int ENEMY_INIT_Y = 100;//“G‚Ì‰ŠúY
 	const float ENEMY_INIT_SPEED = 100.0f;
-	const int ENEMY_BEAM_NUM = 2;//“Gˆê‘Ì‚ª”­Ë‚Å‚«‚é’e‚Ì”
+	const int ENEMY_BEAM_NUM = 1;//“Gˆê‘Ì‚ª”­Ë‚Å‚«‚é’e‚Ì”
 	const float BEAM_INTERVAL = 1.0f;//’e‚Ì”­ËŠÔŠu
 }
 
@@ -132,6 +132,5 @@ EnemyBeam* Enemy01::GetActiveBeam()
 			return itr;
 		}
 	}
-
 	return nullptr;
 }

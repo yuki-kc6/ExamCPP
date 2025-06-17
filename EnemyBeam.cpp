@@ -48,11 +48,14 @@ EnemyBeam::~EnemyBeam()
 void EnemyBeam::Update()
 {
 	float dt = GetDeltaTime();
+	if (pos_.x < tpos_.x)
+	{
+		
+	}
 	pos_.y = pos_.y + speed_ * dt;
 	if (pos_.y > WIN_HEIGHT)
 	{
 		isFired_ = false;//‰æ–ÊŠO‚Éo‚½‚ç€”õó‘Ô
-		SetAlive(false);
 	}
 }
 
@@ -64,4 +67,9 @@ void EnemyBeam::Draw()
 			pos_.x + imageSize_.x, pos_.y + imageSize_.y,
 			hImage_, TRUE);
 	}
+}
+
+void EnemyBeam::SetTarget(const Point& pos)
+{
+	tpos_.x = pos.x;
 }

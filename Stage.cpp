@@ -5,10 +5,10 @@
 #include "Bullet.h"
 #include "EnemyBeam.h"
 #include "Input.h"
-
+#include "Effect.h"
 namespace
 {
-	const int ENEMY_NUM = 3;//10*7;//“G‚Ì”
+	const int ENEMY_NUM = 10*7;//“G‚Ì”
 	const int ENEMY_COL_SIZE = 10;//“G‚Ì—ñ”
 	const int ENEMY_ROW_SIZE =7;//“G‚Ìs”
 	const float ENEMY_ALIGN_X = 55.0f;//“G‚ğ•À‚×‚é•
@@ -83,6 +83,7 @@ void Stage::UpdateTitle()
 		enemy01_ = std::vector<Enemy01*>(ENEMY_NUM);
 		for (int i = 0; i < ENEMY_NUM; i++)
 		{
+
 			int col = i % ENEMY_COL_SIZE;
 			int row = i / ENEMY_COL_SIZE;
 			ETYPE enemyType[ENEMY_ROW_SIZE] = { BOSS,KNIGHT,ZAKO,ZAKO,ZAKO };
@@ -126,9 +127,6 @@ void Stage::UpdateClear()
 
 void Stage::PlayerVSEnemyBullet()
 {
-
-	
-
 	std::vector<Bullet*>bullets = player_->GetAllBullets();
 	for (auto& e : enemy01_)
 	{
@@ -147,51 +145,40 @@ void Stage::PlayerVSEnemyBullet()
 
 				}
 			}
-
-		}
-		for (auto& eb : beam)
-		{
-			if (eb->IsFired() && player_->IsAlive())
+			for (auto& eb : beam)
 			{
-				if (IntersectRect(eb->GetRect(), player_->GetRect()))
+				if (eb->IsFired() && player_->IsAlive())
 				{
-					if (eb->IsFired())
-						eb->SetFired(false);
-					if (player_->IsAlive()) {
-						player_->SetAlive(false);
-					}
-
-				}
-			}
-			for (auto& pb : bullets)
-			{
-				if (eb->IsFired() && pb->IsAlive())
-				{
-					if (IntersectRect(eb->GetRect(), pb->GetRect()))
+					if (IntersectRect(eb->GetRect(), player_->GetRect()))
 					{
-						if (pb->IsAlive()) {
-							pb->SetFired(false);
-							pb->SetAlive(false);
+						if (eb->IsFired())
+							eb->SetFired(false);
+						if (player_->IsAlive()) {
+							player_->SetAlive(false);
+						}
+					}
+				}
+				if (eb->IsFired() && b->IsFired())
+				{
+					if (IntersectRect(eb->GetRect(), b->GetRect()))
+					{
+						if (b->IsAlive()) {
+							b->SetFired(false);
 						}
 
 						if (eb->IsAlive())
 						{
 							eb->SetFired(false);
-							eb->SetAlive(false);
 						}
-
-
 					}
 				}
-			}
+
+
+
+		}
 
 		}
 	}
-
-
-
-
-	
 }
 
 void Stage::Draw()
