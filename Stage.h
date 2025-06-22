@@ -17,6 +17,7 @@ private:
     Player* player_;//ﾌﾟﾚｲﾔｰオブジェクト
     std::vector<Enemy01*> enemy01_;//敵オブジェクト
     int hBackGround;
+    int hTitle;
     enum  State
     {
         TITLE = 0,

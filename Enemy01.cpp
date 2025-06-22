@@ -78,7 +78,7 @@ Enemy01::Enemy01(int id,ETYPE type)
 
 Enemy01::~Enemy01()
 {
-	new Effect({ x_, y_ });
+	
 
 	if (hImage_ != -1)
 	{
@@ -133,4 +133,9 @@ EnemyBeam* Enemy01::GetActiveBeam()
 		}
 	}
 	return nullptr;
+}
+
+void Enemy01::EffectSet()
+{
+	new Effect({ x_, y_ });
 }

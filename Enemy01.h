@@ -20,6 +20,7 @@ public:
     void Update()override;
     void Draw()override;
     void Shoot();
+    void EffectSet();
     void SetPos(float x, float y) { x_ = x; y_ = y; }//敵の座標を設定
     Rect GetRect()const { return { x_,y_,imageSize_.x,imageSize_.y }; }//プレイヤーの矩形を取得
     //void SetID(int id) { ID_ = id; }//敵のIDを設定
@@ -40,5 +41,6 @@ private:
     float xorigin_;
     float moveTime_;
     EnemyBeam* GetActiveBeam();
+    
 
 };

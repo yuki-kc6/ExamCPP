@@ -42,7 +42,7 @@ namespace
 }
 
 Stage::Stage()
-	:GameObject(), player_(nullptr),hBackGround(-1),eCount(0)
+	:GameObject(), player_(nullptr),hBackGround(-1),eCount(0),hTitle(-1)
 {
 	AddGameObject(this);//ステージオブジェクトをゲームオブジェクト
 	
@@ -53,6 +53,9 @@ Stage::Stage()
 Stage::~Stage()
 {
 }
+
+
+
 
 void Stage::Update()
 {
@@ -75,9 +78,11 @@ void Stage::Update()
 
 void Stage::UpdateTitle()
 {
-	DrawBox(0, 0, 100, 100, GetColor(255, 255, 255), false);
-	if (Input::IsKeepKeyDown(KEY_INPUT_SPACE))
+
+	hTitle = LoadGraph("Assets\\Title.png");
+	if (Input::IsKeyDown(KEY_INPUT_SPACE))
 	{
+		
 		player_ = new Player();
 		state = PLAY;
 		enemy01_ = std::vector<Enemy01*>(ENEMY_NUM);
@@ -94,6 +99,8 @@ void Stage::UpdateTitle()
 			enemy01_[i]->SetPos(col * ENEMY_ALIGN_X + ENEMY_LEFT_MARGIN, row * ENEMY_ALIGN_Y + ENEMY_TOP_MARGIN);
 
 			enemy01_[i]->SetXorigin(col * ENEMY_ALIGN_X + ENEMY_LEFT_MARGIN);
+
+			DeleteGraph(hTitle);
 		}
 	}
 }
@@ -105,24 +112,39 @@ void Stage::UpdatePlay()
 	
 	if (!player_->IsAlive())
 	{
-		enemy01_.clear();
+
+		for (auto e : enemy01_)
+		{
+			e->SetAlive(false);
+		}
+	
+		hTitle = LoadGraph("Assets\\GameOver.png");
 		state = GAMEOVER;
-		
+	
 	}
 	if (eCount >= ENEMY_NUM)
 	{
+		hTitle = LoadGraph("Assets\\Clear.png");
 		state = CLEAR;
 	}
 }
 
 void Stage::UpdateGameover()
 {
-	DrawBox(0, 0, 100, 100, GetColor(255, 255, 255), false);
+
+	if (Input::IsKeepKeyDown(KEY_INPUT_SPACE))
+	{
+		state = TITLE;
+	}
 }
 
 void Stage::UpdateClear()
 {
-	DrawBox(0, 0, 100, 100, GetColor(255, 255, 255), false);
+	if (Input::IsKeepKeyDown(KEY_INPUT_SPACE))
+	{
+		player_->SetAlive(false);
+		state = TITLE;
+	}
 }
 
 void Stage::PlayerVSEnemyBullet()
@@ -139,12 +161,14 @@ void Stage::PlayerVSEnemyBullet()
 					if (b->IsFired())
 						b->SetFired(false);
 					if (e->IsAlive()) {
+						e->EffectSet();
 						e->SetAlive(false);
 						eCount++;
 					}
 
 				}
 			}
+			
 			for (auto& eb : beam)
 			{
 				if (eb->IsFired() && player_->IsAlive())
@@ -154,6 +178,7 @@ void Stage::PlayerVSEnemyBullet()
 						if (eb->IsFired())
 							eb->SetFired(false);
 						if (player_->IsAlive()) {
+							player_->EffectSet();
 							player_->SetAlive(false);
 						}
 					}
@@ -172,18 +197,24 @@ void Stage::PlayerVSEnemyBullet()
 						}
 					}
 				}
+				if (!player_->IsAlive())
+				{
+					eb->SetFired(false);
+				}
 
-
-
-		}
+			}
 
 		}
 	}
+
 }
 
 void Stage::Draw()
 {
+	
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
-	DrawExtendGraph(0, 0, WIN_WIDTH, WIN_HEIGHT, hBackGround, FALSE);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND,100);
+	DrawExtendGraph(0, 0, WIN_WIDTH, WIN_HEIGHT, hBackGround, FALSE);	
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 100);
+	DrawExtendGraph(WIN_WIDTH / 2-400, WIN_HEIGHT / 2-200 ,WIN_WIDTH / 2 + 450, WIN_HEIGHT / 2 + 200, hTitle, true);
+	
 }

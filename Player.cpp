@@ -3,6 +3,7 @@
 #include "global.h"
 #include "Input.h"
 #include "Bullet.h"
+#include "Effect.h"
 
 namespace
 {	
@@ -39,7 +40,12 @@ Player::Player()
 
 Player::~Player()
 {
-	//画像サイズを解放（あと書く）
+	new Effect({ x_, y_ });
+
+	if (hImage_ != -1)
+	{
+		DeleteGraph(hImage_);//画像のハンドルを解放
+	}
 }
 
 void Player::Update()
@@ -116,4 +122,10 @@ Bullet* Player::GetActiveBullet()
 		}
 	}
 	return nullptr;
+}
+
+
+void Player::EffectSet()
+{
+	new Effect({ x_, y_ });
 }
